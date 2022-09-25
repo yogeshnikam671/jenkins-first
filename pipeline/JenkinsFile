@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Clean Up") {
+            steps {
+                sh "echo 'This is my first pipeline'"
+                deleteDir()
+            }
+        }
+        stage("Clone Repo") {
+            steps {
+                sh "git clone https://github.com/yogeshnikam671/SpringAuthApplication.git"
+                sh "ls"
+            }
+        }
+        stage("Build") {
+            steps {
+                // dir is basically cd of jenkins
+                dir("SpringAuthApplication") {
+                    sh "ls"
+                    sh "./gradlew clean build"
+                }
+            }
+        }
+
+    }
+}

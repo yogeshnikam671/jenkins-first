@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+                choices: ["default", "dev", "random"],
+                description: "Decides where to push the docker image built",
+                name: "dockerRepository"
+        )
+    }
+
+    stages {
+        stage('Initialize') {
+            steps {
+                //enable remote triggers
+                script {
+                    properties([pipelineTriggers([pollSCM('* * * * *')])])
+                }
+                //define scm connection for polling
+                git branch: "master", credentialsId: 'my-credentials', url: 'https://github.com/yogeshnikam671/SpringAuthApplication.git'
+            }
+        }
+
+        stage("Checkout") {
+            steps {
+                sh "ls"
+            }
+        }
+
+        stage("Build") {
+            steps {
+                sh "echo 'Building the image'"
+            }
+        }
+
+        stage("Push Docker Image") {
+            steps {
+                sh "echo 'Pushed the image built to ${params.dockerRepository} repository'"
+            }
+        }
+    }
+}

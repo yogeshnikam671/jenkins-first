@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Initialize") {
+            steps {
+                sh "echo 'The pipeline is initialized'"
+            }
+        }
+
+        stage("Print Environment Variables") {
+            steps {
+                sh "echo 'The list of these readily available environment variable is available on official Jenkins website'"
+                sh "echo 'The build number is ${env.BUILD_NUMBER}'"
+                sh "echo 'The job name is ${env.JOB_NAME}'"
+            }
+        }
+    }
+}

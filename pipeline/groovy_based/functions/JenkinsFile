@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(
+              name: "bool",
+              description: "Decides what result will be printed",
+              defaultValue: false
+        )
+    }
+
+    stages {
+        stage("Initialize") {
+            steps {
+                sh "echo 'Hello Groovy Functions!'"
+            }
+        }
+
+        stage("Print Result") {
+            steps {
+                sh "echo ${getResult(params.bool as boolean)}"
+            }
+        }
+    }
+}
+
+static String getResult(boolean bool) {
+    return bool ? "SUCCESS" : "FAILURE"
+}

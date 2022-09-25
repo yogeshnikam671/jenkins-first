@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Initialize") {
+            steps {
+                sh "echo 'Run Job From Job! - https://www.jenkins.io/doc/pipeline/steps/pipeline-build-step/'"
+            }
+        }
+
+        stage("Run Choice Job") {
+            steps {
+                build job: 'Choice Param Pipeline', parameters: [[
+                    $class: 'StringParameterValue',
+                    name: 'dockerRepository',
+                    value: 'dev'
+                 ]]
+            }
+        }
+    }
+}

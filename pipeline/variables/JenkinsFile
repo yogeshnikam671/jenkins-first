@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    environment {
+        def stringVar = "Hello Jenkins!"
+        def intVar = 10
+        def boolVar = true
+    }
+
+    stages {
+        stage("Initialize") {
+            steps {
+                sh "echo 'The pipeline is initialized'"
+            }
+        }
+
+        stage("Print Variables") {
+            steps {
+                sh "echo ${env.stringVar}"
+                sh "echo ${env.intVar}"
+                sh "echo ${env.boolVar}"
+            }
+        }
+    }
+}

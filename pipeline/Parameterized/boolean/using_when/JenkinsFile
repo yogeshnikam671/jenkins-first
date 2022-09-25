@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(
+                defaultValue: false,
+                description: "Decides whether to run the build stage or not.",
+                name: "enableBuild"
+        )
+    }
+
+    stages {
+        stage('Initialize') {
+            steps {
+                //enable remote triggers
+                script {
+                    properties([pipelineTriggers([pollSCM('* * * * *')])])
+                }
+                //define scm connection for polling
+                git branch: "master", credentialsId: 'my-credentials', url: 'https://github.com/yogeshnikam671/SpringAuthApplication.git'
+            }
+        }
+        stage("Checkout") {
+            steps {
+                sh "ls"
+            }
+        }
+        stage("Build") {
+            when {
+                expression {
+                    return params.enableBuild
+                }
+            }
+            steps {
+                sh "./gradlew clean build"
+            }
+        }
+    }
+}
